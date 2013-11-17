@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.ritz.music.model">
+    
+    <class name="User" table="user">
+        <id name="userId" column="user_id" type="long">
+            <generator class="increment"/>
+        </id>
+        <property name="firstName" column="first_name" not-null="true" type="string" length="64"/>
+        <property name="lastName" column="last_name" not-null="true" type="string" length="64"/>
+        <property name="emailAddress" column="email_address" not-null="true" unique="true" type="string" length="128"/>
+        <property name="state" column="state" not-null="true">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.ritz.music.model.UserState</param>
+            </type>
+        </property>
+        <property name="createdTime" column="created_time" not-null="true" type="timestamp"/>
+    </class>
+
+    <class name="Artist" table="artist">
+        <id name="artistId" column="artist_id" type="long">
+            <generator class="increment"/>
+        </id>
+        <property name="name" column="name" not-null="true" unique="true" type="string" length="64"/>
+    </class>
+
+    <class name="Track" table="track">
+        <id name="trackId" column="track_id" type="long">
+            <generator class="increment"/>
+        </id>
+        <property name="title" column="title" not-null="true" type="string" length="64"/>
+        <many-to-one name="artist" column="artist" class="Artist" lazy="false" not-null="true"/>
+        <property name="keywords" column="keywords" not-null="true" type="string" length="265"/>
+    </class>
+    
+    <class name="Vote" table="vote">
+        <composite-id class="org.ritz.music.model.hibernate.VoteKey">
+            <key-property name="userId" column="user_id" type="long"/>
+            <key-property name="trackId" column="track_id" type="long"/>
+        </composite-id>
+        <property name="score" column="score" not-null="true" type="int"/>
+        <property name="createdTime" column="created_time" not-null="true" type="timestamp"/>
+    </class>
+    
+</hibernate-mapping>

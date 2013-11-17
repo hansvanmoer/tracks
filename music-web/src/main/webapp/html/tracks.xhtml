@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+    </h:head>
+    <h:body>
+        <h1>It's Alive !!!</h1>
+        <h:form>
+            <p:fieldset id="selectableTracks" legend="Tracks">  
+                <p:outputLabel value="Filter:"/>
+                <p:inputText value="${trackList.searchQuery}">
+                    <p:ajax event="keyup" listener="#{trackList.queryChanged}" update="trackTable"/>
+                </p:inputText>
+                <p:dataTable id="trackTable" var="track" value="#{trackList.tracks}"  
+                             paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,15,20,50">  
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Title" />  
+                        </f:facet>  
+                        <h:outputText id="trackTitle" value="#{track.title}" />  
+                        <p:draggable for="trackTitle" revert="true" />
+                    </p:column>
+
+                    <p:column>  
+                        <f:facet name="header">  
+                            <h:outputText value="Artist" />  
+                        </f:facet>  
+                        <h:outputText value="#{track.artist.name}" />  
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>            
+            <p:fieldset id="selectedTrackFieldSet" legend="Selection">
+                <p:outputPanel id="selectedTrackPanel">
+                    <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
+                    <p:dataTable id="selectedTrackTable" var="track" value="#{trackList.selectedTracks}"  paginator="false" rows="5" rendered="#{not empty trackList.selectedTracks}">  
+                        <p:column>
+                            <f:facet name="header">  
+                                <h:outputText value="Title" />  
+                            </f:facet>  
+                            <h:outputText value="#{track.title}" />  
+                        </p:column>  
+
+                        <p:column>  
+                            <f:facet name="header">  
+                                <h:outputText value="Artist" />  
+                            </f:facet>  
+                            <h:outputText value="#{track.artist.name}" />  
+                        </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+            </p:fieldset>
+            <p:droppable for="selectedTrackFieldSet" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="trackTable">
+                <p:ajax listener="#{trackList.trackDropped}" update="selectedTrackPanel trackTable" />
+            </p:droppable>
+            
+             
+        </h:form>
+    </h:body>
+</html>
