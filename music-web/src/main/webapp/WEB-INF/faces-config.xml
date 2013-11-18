@@ -67,6 +67,17 @@
         </managed-property>
     </managed-bean>
     
+        
+    <managed-bean eager="true">
+        <managed-bean-name>trackConverter</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.TrackConverter</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>trackService</property-name>
+            <value>#{trackService}</value>
+        </managed-property>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>trackList</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.TrackList</managed-bean-class>
@@ -76,7 +87,6 @@
             <value>#{trackService}</value>
         </managed-property>
     </managed-bean>
-    
     
     
 </faces-config>

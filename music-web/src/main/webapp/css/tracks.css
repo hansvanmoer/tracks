@@ -1,0 +1,7 @@
+/*
+    Custom css for the tracks application
+*/
+
+.selectedTracks{
+    min-width: 500px;
+}

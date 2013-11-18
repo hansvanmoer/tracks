@@ -8,6 +8,8 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
+        <link href="css/tracks.css" rel="stylesheet"></link>
+        <script type="text/javascript" src="js/tracks.js"/>
     </h:head>
     <h:body>
         <h1>It's Alive !!!</h1>
@@ -40,28 +42,27 @@
             <p:fieldset id="selectedTrackFieldSet" legend="Selection">
                 <p:outputPanel id="selectedTrackPanel">
                     <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
-                    <p:dataTable id="selectedTrackTable" var="track" value="#{trackList.selectedTracks}"  paginator="false" rows="5" rendered="#{not empty trackList.selectedTracks}">  
+                    <p:orderList id="selectedTrackTable" itemValue="#{track}" value="#{trackList.selectedTracks}" converter="#{trackConverter}" var="track" controlsLocation="left" styleClass="selectedTracks">
                         <p:column>
                             <f:facet name="header">  
                                 <h:outputText value="Title" />  
                             </f:facet>  
                             <h:outputText value="#{track.title}" />  
                         </p:column>  
-
-                        <p:column>  
+                        <p:column>
                             <f:facet name="header">  
                                 <h:outputText value="Artist" />  
                             </f:facet>  
                             <h:outputText value="#{track.artist.name}" />  
                         </p:column>
-                    </p:dataTable>
+                    </p:orderList>
                 </p:outputPanel>
+                <p:commandLink action="vote"/>
+                <p:commandButton id="vote" action="vote" process="@this selectedTracks" value="Vote" ajax="false" update="selectedTrackFieldSet"/>
             </p:fieldset>
             <p:droppable for="selectedTrackFieldSet" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="trackTable">
                 <p:ajax listener="#{trackList.trackDropped}" update="selectedTrackPanel trackTable" />
             </p:droppable>
-            
-             
         </h:form>
     </h:body>
 </html>
