@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.DragDropEvent;
 import org.ritz.music.model.Track;
-import org.ritz.music.model.User;
 import org.ritz.music.service.MusicServiceException;
 import org.ritz.music.service.TrackService;
 import org.slf4j.Logger;
@@ -26,15 +25,11 @@ import org.slf4j.LoggerFactory;
 public class TrackList implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrackList.class);
-    private static final int MAX_SELECTED_TRACKS = 5;
-    private static final int[] SCORES = {5, 4, 3, 2, 1};
+        
     private TrackService trackService;
     private String searchQuery;
     private List<Track> tracks;
     private List<Track> selectedTracks;
-    
-    private User user;
-    private Integer answer;
     
     /*
      * Workaround: JSF orderlist does not change underlying order.
@@ -42,9 +37,8 @@ public class TrackList implements Serializable {
     private String selectedTrackCodes;
 
     public TrackList() {
-        this.selectedTracks = new ArrayList<Track>(MAX_SELECTED_TRACKS);
+        this.selectedTracks = new ArrayList<Track>(ApplicationConstants.SELECTED_TRACKS_COUNT);
         this.searchQuery = "";
-        this.user = new User("", "", "");
     }
 
     public TrackService getTrackService() {
@@ -86,21 +80,11 @@ public class TrackList implements Serializable {
     public void setSelectedTrackCodes(String selectedTrackCodes) {
         this.selectedTrackCodes = selectedTrackCodes;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Integer getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(Integer answer) {
-        this.answer = answer;
+    
+    void reset(){
+        this.selectedTracks = new ArrayList<Track>(ApplicationConstants.SELECTED_TRACKS_COUNT);
+        this.searchQuery = "";
+        this.loadTracks();
     }
     
     @PostConstruct
@@ -113,7 +97,7 @@ public class TrackList implements Serializable {
     }
 
     public void select(Track track) {
-        if (this.selectedTracks.size() < MAX_SELECTED_TRACKS && !this.selectedTracks.contains(track)) {
+        if (this.selectedTracks.size() < ApplicationConstants.SELECTED_TRACKS_COUNT && !this.selectedTracks.contains(track)) {
             this.selectedTracks.add(track);
             this.update();
         }
@@ -124,6 +108,10 @@ public class TrackList implements Serializable {
             this.selectedTracks.remove(track);
         }
         this.update();
+    }
+    
+    public boolean isSelectionComplete(){
+        return selectedTracks.size() == ApplicationConstants.SELECTED_TRACKS_COUNT;
     }
 
     public void queryChanged() {

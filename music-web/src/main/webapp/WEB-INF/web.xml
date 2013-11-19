@@ -26,9 +26,34 @@
     <display-name>tracks</display-name>
 
     <welcome-file-list>
-        <welcome-file>html/tracks.xhtml</welcome-file>
+        <welcome-file>tracks.xhtml</welcome-file>
     </welcome-file-list>
 
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.xhtml</location>
+    </error-page>
+    
+     <error-page>
+        <error-code>404</error-code>
+        <location>/error.xhtml</location>
+    </error-page>
+
+    <filter>
+        <filter-name>redirect-filter</filter-name>
+        <filter-class>org.ritz.music.web.RedirectFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>redirect-filter</filter-name>
+        <url-pattern>/tracks.xhtml</url-pattern>
+    </filter-mapping>
+     
+    <filter-mapping>
+        <filter-name>redirect-filter</filter-name>
+        <url-pattern>/vote.xhtml</url-pattern>
+    </filter-mapping>
+       
     <servlet>
         <servlet-name>faces-servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

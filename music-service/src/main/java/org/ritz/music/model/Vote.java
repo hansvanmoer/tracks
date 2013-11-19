@@ -29,6 +29,15 @@ public class Vote implements Serializable{
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
     
+    public VoteKey getVoteId(){
+        return new VoteKey(this.userId, this.trackId);
+    }
+    
+    public void setVoteId(VoteKey key){
+        this.userId = key.getUserId();
+        this.trackId = key.getTrackId();
+    }
+    
     public Long getUserId() {
         return userId;
     }

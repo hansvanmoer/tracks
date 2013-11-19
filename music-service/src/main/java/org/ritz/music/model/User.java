@@ -6,6 +6,7 @@ package org.ritz.music.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,8 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     private String emailAddress;
+    private String telephone;
+    private Date birthDate;
     private UserState state;
     private Timestamp createdTime;
 
@@ -25,12 +28,14 @@ public class User implements Serializable{
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
     
-    public User(String firstName, String lastName, String emailAddress){
+    public User(String firstName, String lastName, String emailAddress, String telephone, Date birthDate){
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.state = UserState.ACCEPTED;
         this.createdTime = new Timestamp(System.currentTimeMillis());
+        this.telephone = telephone;
+        this.birthDate = birthDate;
     }
     
     public Long getUserId() {
@@ -81,6 +86,22 @@ public class User implements Serializable{
         this.createdTime = createdTime;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

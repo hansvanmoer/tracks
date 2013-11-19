@@ -13,7 +13,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.ritz.music.model.Vote;
-import org.ritz.music.model.hibernate.VoteKey;
+import org.ritz.music.model.VoteKey;
 import org.ritz.music.service.MusicServiceException;
 import org.ritz.music.service.VoteService;
 
@@ -79,6 +79,33 @@ public class HibernateVoteService extends HibernateService<Vote, VoteKey> implem
             close(session, transaction);
         }
     }
+
+    @Override
+    public void addVotes(List<Vote> votes) throws MusicServiceException {
+        Session session = getSession();
+        Transaction transaction = null;
+        try{
+            transaction = session.beginTransaction();
+            for(Vote vote : votes){
+                Vote existing = (Vote)session.createCriteria(Vote.class)
+                        .add(Restrictions.eq("userId", vote.getUserId()))
+                        .add(Restrictions.eq("score", vote.getScore())).uniqueResult();
+                if(existing == null){
+                    session.saveOrUpdate(vote);
+                }else{
+                    rollback(transaction);
+                    throw new MusicServiceException("unable to create vote: duplicate score");
+                }
+            }
+        }catch(HibernateException e){
+            rollback(transaction);
+            throw new MusicServiceException(String.format("unable tocreate or update \"%s\"",Vote.class.getName()), e);
+        }finally{
+            close(session, transaction);
+        }
+    }
+    
+    
     
     private static class GetByUser implements CriteriaPreparator{
         

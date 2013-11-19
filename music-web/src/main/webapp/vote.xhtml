@@ -10,6 +10,7 @@
     </h:head>
     <h:body>
         <h:form>
+            <h:messages showDetail="true" showSummary="true"/>
             <p:fieldset id="confirmVoteFields" legend="Confirm Vote">
                 <p:commandLink action="tracks" value="Back" ajax="false" update="@this" immediate="true" />
                 <h:inputHidden id="selectedTracks" value="#{trackList.selectedTrackCodes}"/>
@@ -37,7 +38,9 @@
                             <h:outputLabel for="firstName" value="First name"/>   
                         </p:column>
                         <p:column>
-                            <p:inputText id="firstName" value="#{trackList.user.firstName}"/>
+                            <p:inputText id="firstName" required="true" value="#{voter.user.firstName}" validatorMessage="First name is a required field">
+                                <f:validateLength minimum="1" maximum="64"/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -45,7 +48,9 @@
                             <h:outputLabel for="lastName" value="Last name"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="lastName" value="#{trackList.user.lastName}"/>
+                            <p:inputText required="true" id="lastName" value="#{voter.user.lastName}" validatorMessage="Last name is a required field">
+                                <f:validateLength minimum="1" maximum="64"/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -53,9 +58,27 @@
                             <h:outputLabel for="email" value="email"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="email" value="#{trackList.user.emailAddress}">
+                            <p:inputText id="email" required="true" value="#{voter.user.emailAddress}" validatorMessage="Not a valid email address">
                                 <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                             </p:inputText>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="telephone" value="telephone"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="telephone" required="true" value="#{voter.user.telephone}" validatorMessage="Telephone is a required field">
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="birthDate" value="Birth date"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" validatorMessage="Birth date is a required field">
+                            </p:calendar>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -68,11 +91,15 @@
                             <h:outputLabel for="answer" value="Antwoord schiftingsvraag:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="answer" value="#{trackList.answer}"/>
+                            <p:inputText id="answer" value="#{voter.answer}" required="true">
+                                <f:validateLongRange minimum="1"/>
+                                <f:validateRequired/>
+                            </p:inputText>
                         </p:column>
                     </p:row>
                 </h:panelGrid>
-                <p:commandButton ajax="true" value="Vote" update="confirmVoteFields"/>
+                <p:commandButton ajax="false" value="Vote" action="#{voter.vote}" rendered="#{trackList.selectionComplete}" />
+                <p:commandLink action="tracks" value="Select more tracks before voting" ajax="false" immediate="true" rendered="#{!trackList.selectionComplete}" />
         </p:fieldset>
     </h:form>
 </h:body>

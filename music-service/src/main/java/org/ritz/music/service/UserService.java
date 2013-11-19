@@ -6,6 +6,7 @@ package org.ritz.music.service;
 
 import java.util.List;
 import org.ritz.music.model.User;
+import org.ritz.music.model.Vote;
 
 /**
  * @author hans
@@ -13,6 +14,8 @@ import org.ritz.music.model.User;
 public interface UserService {
     
     void addUser(User user) throws MusicServiceException;
+    
+    void addUser(User user, List<Vote> votes) throws MusicServiceException;
     
     List<User> getUsers() throws MusicServiceException;
     
