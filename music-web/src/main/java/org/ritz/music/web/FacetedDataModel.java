@@ -37,7 +37,7 @@ public class FacetedDataModel<Model extends Identifiable> extends LazyDataModel<
     private Facet<Model> sortFacet;
     
     private org.ritz.music.service.SortOrder sortOrder;
-    
+        
     public FacetedDataModel(FacetedSearch<Model> searchService){
         this.searchService = searchService;
         this.facetMap = new HashMap<String, Facet<Model> >();
@@ -70,7 +70,12 @@ public class FacetedDataModel<Model extends Identifiable> extends LazyDataModel<
 
     @Override
     public Model getRowData(String rowKey) {
-        return super.getRowData(rowKey);
+        try{
+            return searchService.getByPrimaryKey(Long.parseLong(rowKey));
+        }catch(MusicServiceException e){
+            LOG.error(String.format("unable to fetch model by primary key %s", rowKey), e);
+            return null;
+        }
     }
     
     private org.ritz.music.service.SortOrder getSortOrder(SortOrder order){
@@ -92,7 +97,7 @@ public class FacetedDataModel<Model extends Identifiable> extends LazyDataModel<
             this.sortFacet = facetMap.get(sortField);
             this.sortOrder = getSortOrder(sortOrder);
             QueryResult<Model> result =  searchService.search(searchTerms, sortFacet, this.sortOrder, first, pageSize);
-            this.setRowCount(result.getTotalResultCount()); 
+            this.setRowCount(result.getTotalResultCount());
             return result.getResults();
         }catch(MusicServiceException e){
             LOG.error("unable to perform faceted search", e);

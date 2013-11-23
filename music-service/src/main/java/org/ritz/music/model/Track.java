@@ -17,12 +17,14 @@ public class Track implements Serializable, Identifiable {
     public static Facet<Track> TITLE_FACET = new Facet<Track>(Track.class, "title");
     public static Facet<Track> ARTIST_FACET = new Facet<Track>(Track.class, "artist.name");
     public static Facet<Track> SCORE_FACET = new Facet<Track>(Track.class, "score");
+    public static Facet<Track> RANK_FACET = new Facet<Track>(Track.class, "rank");
     
     private Long trackId;
     private String title;
     private Artist artist;
     private String keywords;
     private Integer score;
+    private Integer rank;
 
     public Track(){
         this.score = 0;
@@ -33,6 +35,7 @@ public class Track implements Serializable, Identifiable {
         this.artist = artist;
         this.keywords = createKeyWords(title, artist);
         this.score = 0;
+        this.rank = 0;
     }
     
     private static String createKeyWords(String title, Artist artist){
@@ -79,6 +82,14 @@ public class Track implements Serializable, Identifiable {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 
     @Override

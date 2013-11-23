@@ -91,7 +91,7 @@
                             <h:outputLabel for="answer" value="Antwoord schiftingsvraag:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="answer" value="#{voter.answer}" required="true">
+                            <p:inputText id="answer" value="#{voter.user.answer}" required="true">
                                 <f:validateLongRange minimum="1"/>
                                 <f:validateRequired/>
                             </p:inputText>

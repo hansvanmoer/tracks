@@ -21,6 +21,7 @@ public class User implements Serializable, Identifiable{
     public static Facet<User> EMAIL_ADDRESS_FACET = new Facet<User>(User.class,"emailAddress");
     public static Facet<User> TELEPHONE_FACET = new Facet<User>(User.class,"telephone");
     public static Facet<User> BIRTH_DATE_FACET = new Facet<User>(User.class,"birthDate");
+    public static Facet<User> ANSWER_FACET = new Facet<User>(User.class,"answer");
     
     private Long userId;
     private String firstName;
@@ -28,6 +29,7 @@ public class User implements Serializable, Identifiable{
     private String emailAddress;
     private String telephone;
     private Date birthDate;
+    private Integer answer;
     private UserState state;
     private Timestamp createdTime;
 
@@ -35,7 +37,7 @@ public class User implements Serializable, Identifiable{
         this.createdTime = new Timestamp(System.currentTimeMillis());
     }
     
-    public User(String firstName, String lastName, String emailAddress, String telephone, Date birthDate){
+    public User(String firstName, String lastName, String emailAddress, String telephone, Date birthDate, Integer answer){
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
@@ -43,6 +45,7 @@ public class User implements Serializable, Identifiable{
         this.createdTime = new Timestamp(System.currentTimeMillis());
         this.telephone = telephone;
         this.birthDate = birthDate;
+        this.answer = answer;
     }
     
     public Long getUserId() {
@@ -107,6 +110,14 @@ public class User implements Serializable, Identifiable{
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Integer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Integer answer) {
+        this.answer = answer;
     }
     
     @Override

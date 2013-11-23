@@ -15,6 +15,7 @@
         <param name="enumClass">org.ritz.music.model.UserState</param>
       </type>
     </property>
+    <property name="answer" column="answer" not-null="true" type="int"/>
     <property column="created_time" name="createdTime" not-null="true" type="timestamp"/>
   </class>
   <class name="Artist" table="artist">
@@ -31,6 +32,7 @@
     <many-to-one class="Artist" column="artist" lazy="false" name="artist" not-null="true"/>
     <property column="keywords" length="265" name="keywords" not-null="true" type="string"/>
     <property column="score" name="score" not-null="true" type="int"/>
+    <property column="rank" name="rank" not-null="true" type="int"/>
   </class>
   <class name="Vote" table="vote">
     <composite-id class="org.ritz.music.model.VoteKey" name="voteId"> 
@@ -39,5 +41,9 @@
     </composite-id>
     <property column="score" name="score" not-null="true" type="int"/>
     <property column="created_time" name="createdTime" not-null="true" type="timestamp"/>
+  </class>
+  <class name="Setting" table="setting">
+      <id column="setting_id" name="settingId" type="string" length="64"/>
+      <property column="value" name="value" type="string" length="256" not-null="false"/>
   </class>
 </hibernate-mapping>

@@ -39,6 +39,7 @@ public class HibernateTrackService extends HibernateService<Track, Long> impleme
             Track.TITLE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("title", FilterOperator.LIKE));
             Track.ARTIST_FACET.setHandle(SearchHandle.class, new ManyToOneSearchHandle("artist", "artist_" ,"name", FilterOperator.LIKE));
             Track.SCORE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("score", FilterOperator.EQUALS));
+            Track.RANK_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("rank", FilterOperator.EQUALS));
         }
     }
     

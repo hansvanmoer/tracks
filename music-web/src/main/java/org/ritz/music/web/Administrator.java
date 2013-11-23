@@ -53,6 +53,11 @@ public class Administrator implements Serializable{
                     return track.getScore();
                 }
             });
+            Track.RANK_FACET.setHandle(OutputHandle.class, new OutputHandle<Track>(){
+                public Serializable getValue(Track track){
+                    return track.getRank();
+                }
+            });
         }
         if(!User.FIRST_NAME_FACET.hasHandle(OutputHandle.class)){
             User.FIRST_NAME_FACET.setHandle(OutputHandle.class, new OutputHandle<User>(){
@@ -85,15 +90,17 @@ public class Administrator implements Serializable{
                     return EXPORT_DATE_FORMAT.format(model.getBirthDate());
                 }
             });
+            User.ANSWER_FACET.setHandle(OutputHandle.class, new OutputHandle<User>(){
+                @Override
+                public Serializable getValue(User model) {
+                    return model.getAnswer();
+                }
+            });
         }
-        this.tracks = new FacetedDataModel<Track>(trackService, Track.TITLE_FACET, Track.ARTIST_FACET, Track.SCORE_FACET);
+        this.tracks = new FacetedDataModel<Track>(trackService, Track.TITLE_FACET, Track.ARTIST_FACET, Track.SCORE_FACET, Track.RANK_FACET);
         this.trackExporter = new DataExporter<Track>(this.tracks, TRACK_FILE_NAME, true, dataFormatFactory.getDefaultDataFormat());
-        this.users = new FacetedDataModel<User>(userService, User.FIRST_NAME_FACET, User.LAST_NAME_FACET, User.EMAIL_ADDRESS_FACET, User.TELEPHONE_FACET, User.BIRTH_DATE_FACET);
+        this.users = new FacetedDataModel<User>(userService, User.FIRST_NAME_FACET, User.LAST_NAME_FACET, User.EMAIL_ADDRESS_FACET, User.TELEPHONE_FACET, User.BIRTH_DATE_FACET, User.ANSWER_FACET);
         this.userExporter = new DataExporter<User>(this.users, USER_FILE_NAME, true, dataFormatFactory.getDefaultDataFormat());
-    }
-    
-    public void downloadVoters(){
-        
     }
 
     public FacetedDataModel<Track> getTracks() {

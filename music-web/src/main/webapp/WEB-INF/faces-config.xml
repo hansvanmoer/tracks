@@ -13,7 +13,6 @@
     <managed-bean eager="true">
         <managed-bean-name>hibernateConfigurator</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.config.HibernateConfigurator</managed-bean-class>
-    
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
     
@@ -58,6 +57,16 @@
     </managed-bean>
     
     <managed-bean eager="true">
+        <managed-bean-name>settingService</managed-bean-name>
+        <managed-bean-class>org.ritz.music.service.hibernate.HibernateSettingService</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>sessionFactory</property-name>
+            <value>#{hibernateConfigurator.getSessionFactory()}</value>
+        </managed-property>
+    </managed-bean>
+    
+    <managed-bean eager="true">
         <managed-bean-name>dataImporter</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.config.DataImporter</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
@@ -82,6 +91,22 @@
         </managed-property>
     </managed-bean>
     
+    <managed-bean eager="true">
+        <managed-bean-name>settings</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.Settings</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>settingService</property-name>
+            <value>#{settingService}</value>
+        </managed-property>
+    </managed-bean>    
+    
+    <managed-bean eager="true">
+        <managed-bean-name>dataFormatFactory</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.DataFormatFactory</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>trackList</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.TrackList</managed-bean-class>
@@ -104,12 +129,6 @@
             <property-name>trackList</property-name>
             <value>#{trackList}</value>
         </managed-property>
-    </managed-bean>
-    
-    <managed-bean eager="true">
-        <managed-bean-name>dataFormatFactory</managed-bean-name>
-        <managed-bean-class>org.ritz.music.web.DataFormatFactory</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
       
     <managed-bean>

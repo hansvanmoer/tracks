@@ -14,6 +14,7 @@
             <p:tabView id="tabs">
                 <p:tab id="trackTab" title="Tracks">
                     <p:dataTable var="track" value="#{administrator.tracks}" paginator="true" rows="10"  
+                                 currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
                                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
                                  rowsPerPageTemplate="5,10,15" selectionMode="single" id="trackTable" lazy="true">
                         <p:column headerText="Title" sortBy="#{track.title}" filterBy="#{track.title}">  
@@ -22,8 +23,11 @@
                         <p:column headerText="Artist" sortBy="#{track.artist.name}" filterBy="#{track.artist.name}">  
                             <h:outputText value="#{track.artist.name}" />  
                         </p:column>  
-                        <p:column headerText="Score" sortBy="#{track.score}" filterBy="#{track.score}">  
+                        <p:column headerText="Score" sortBy="#{track.score}">  
                             <h:outputText value="#{track.score}" />  
+                        </p:column> 
+                        <p:column headerText="Rank" sortBy="#{track.rank}">  
+                            <h:outputText value="#{track.rank}" />  
                         </p:column> 
                     </p:dataTable>
                     <p:panelGrid columns="2">
@@ -40,6 +44,7 @@
                 </p:tab>
                 <p:tab id="userTab" title="Voters">
                     <p:dataTable var="user" value="#{administrator.users}" paginator="true" rows="10"  
+                                 currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
                                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
                                  rowsPerPageTemplate="5,10,15" selectionMode="single" id="userTable" lazy="true">
                         <p:column headerText="First name" sortBy="#{user.firstName}" filterBy="#{user.firstName}">  
@@ -56,6 +61,9 @@
                         </p:column>
                         <p:column headerText="Birt date" sortBy="#{user.birthDate}">  
                             <h:outputText value="#{user.birthDate}"/>
+                        </p:column>
+                        <p:column headerText="Answer" sortBy="#{user.answer}">
+                            <h:outputText value="#{user.answer}"/>
                         </p:column>
                     </p:dataTable>
                     <p:panelGrid columns="2">

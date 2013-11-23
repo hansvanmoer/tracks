@@ -35,7 +35,7 @@ public class Voter implements Serializable{
     private TrackList trackList;
     
     public Voter(){
-        this.user = new User("","","","",new Date());
+        this.user = new User("","","","",new Date(), 0);
         this.answer = 0;
     }
         
@@ -75,7 +75,7 @@ public class Voter implements Serializable{
     }
     
     public void reset(){
-        this.user = new User("","","","",new Date());
+        this.user = new User("","","","",new Date(), 0);
         this.answer = 0;
     }
     
