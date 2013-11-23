@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.ritz.music.model">
-  <class name="User" table="user">
+  <class name="User" table="user_">
     <id column="user_id" name="userId" type="long">
       <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator"/>
     </id>
@@ -30,6 +30,7 @@
     <property column="title" length="64" name="title" not-null="true" type="string"/>
     <many-to-one class="Artist" column="artist" lazy="false" name="artist" not-null="true"/>
     <property column="keywords" length="265" name="keywords" not-null="true" type="string"/>
+    <property column="score" name="score" not-null="true" type="int"/>
   </class>
   <class name="Vote" table="vote">
     <composite-id class="org.ritz.music.model.VoteKey" name="voteId"> 

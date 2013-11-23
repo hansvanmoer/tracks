@@ -20,6 +20,10 @@ import org.ritz.music.model.Track;
 import org.ritz.music.model.Vote;
 import org.ritz.music.service.MusicServiceException;
 import org.ritz.music.service.TrackService;
+import org.ritz.music.service.hibernate.facet.BasicSearchHandle;
+import org.ritz.music.service.hibernate.facet.FilterOperator;
+import org.ritz.music.service.hibernate.facet.ManyToOneSearchHandle;
+import org.ritz.music.service.hibernate.facet.SearchHandle;
 
 /**
  *
@@ -28,12 +32,16 @@ import org.ritz.music.service.TrackService;
 public class HibernateTrackService extends HibernateService<Track, Long> implements TrackService, Serializable{
     
     private static final int TRACKS_PER_RUN = 100;
-
     
     public HibernateTrackService(){
         super(Track.class);
+        if(!Track.TITLE_FACET.hasHandle(SearchHandle.class)){
+            Track.TITLE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("title", FilterOperator.LIKE));
+            Track.ARTIST_FACET.setHandle(SearchHandle.class, new ManyToOneSearchHandle("artist", "artist_" ,"name", FilterOperator.LIKE));
+            Track.SCORE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("score", FilterOperator.EQUALS));
+        }
     }
-
+    
     @Override
     public void addTrack(Track track) throws MusicServiceException {
         super.saveOrUpdate(track);

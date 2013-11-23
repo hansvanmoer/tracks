@@ -8,12 +8,19 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
+import org.ritz.music.facet.Facet;
 
 /**
  *
  * @author hans
  */
-public class User implements Serializable{
+public class User implements Serializable, Identifiable{
+    
+    public static Facet<User> FIRST_NAME_FACET = new Facet<User>(User.class,"firstName");
+    public static Facet<User> LAST_NAME_FACET = new Facet<User>(User.class,"lastName");
+    public static Facet<User> EMAIL_ADDRESS_FACET = new Facet<User>(User.class,"emailAddress");
+    public static Facet<User> TELEPHONE_FACET = new Facet<User>(User.class,"telephone");
+    public static Facet<User> BIRTH_DATE_FACET = new Facet<User>(User.class,"birthDate");
     
     private Long userId;
     private String firstName;
@@ -122,6 +129,10 @@ public class User implements Serializable{
             return false;
         }
         return true;
+    }
+    
+    public Object getUniqueId(){
+        return userId;
     }
     
 }

@@ -9,7 +9,7 @@
     <lifecycle>
         <phase-listener>org.ritz.music.web.RedirectPhaseListener</phase-listener>
     </lifecycle>
-    
+
     <managed-bean eager="true">
         <managed-bean-name>hibernateConfigurator</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.config.HibernateConfigurator</managed-bean-class>
@@ -100,10 +100,35 @@
             <property-name>userService</property-name>
             <value>#{userService}</value>
         </managed-property>
-         <managed-property>
+        <managed-property>
             <property-name>trackList</property-name>
             <value>#{trackList}</value>
         </managed-property>
     </managed-bean>
+    
+    <managed-bean eager="true">
+        <managed-bean-name>dataFormatFactory</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.DataFormatFactory</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+      
+    <managed-bean>
+        <managed-bean-name>administrator</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.Administrator</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>trackService</property-name>
+            <value>#{trackService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>userService</property-name>
+            <value>#{userService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>dataFormatFactory</property-name>
+            <value>#{dataFormatFactory}</value>
+        </managed-property>
+    </managed-bean>
+
     
 </faces-config>

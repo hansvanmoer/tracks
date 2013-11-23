@@ -6,6 +6,7 @@ package org.ritz.music.service;
 
 import java.util.Collection;
 import java.util.List;
+import org.ritz.music.facet.Facet;
 import org.ritz.music.model.QueryResult;
 import org.ritz.music.model.Track;
 
@@ -13,14 +14,14 @@ import org.ritz.music.model.Track;
  *
  * @author hans
  */
-public interface TrackService {
+public interface TrackService extends FacetedSearch<Track> {
     
     void addTrack(Track track) throws MusicServiceException;
     
     List<Track> getTracks() throws MusicServiceException;
     
     QueryResult<Track> getTracks(int firstResultIndex, int maxResultCount) throws MusicServiceException;
-    
+            
     List<Track> getTracksByScore() throws MusicServiceException;
     
     QueryResult<Track> getTracksByScore(int firstResultIndex, int maxResultCount) throws MusicServiceException;

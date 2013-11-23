@@ -11,7 +11,7 @@ import org.ritz.music.model.Vote;
 /**
  * @author hans
  */
-public interface UserService {
+public interface UserService extends FacetedSearch<User>{
     
     void addUser(User user) throws MusicServiceException;
     

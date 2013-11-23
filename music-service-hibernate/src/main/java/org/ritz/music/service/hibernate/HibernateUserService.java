@@ -9,12 +9,16 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.ritz.music.model.Track;
 import org.ritz.music.model.User;
 import org.ritz.music.model.UserState;
 import org.ritz.music.model.Vote;
 import org.ritz.music.service.MusicServiceException;
 import org.ritz.music.service.UserService;
+import org.ritz.music.service.hibernate.facet.BasicSearchHandle;
+import org.ritz.music.service.hibernate.facet.FilterOperator;
+import org.ritz.music.service.hibernate.facet.ManyToOneSearchHandle;
+import org.ritz.music.service.hibernate.facet.SearchHandle;
 
 /**
  *
@@ -24,6 +28,13 @@ public class HibernateUserService extends HibernateService<User, Long> implement
 
     public HibernateUserService(){
         super(User.class);
+        if(!User.FIRST_NAME_FACET.hasHandle(SearchHandle.class)){
+            User.FIRST_NAME_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("firstName", FilterOperator.LIKE));
+            User.LAST_NAME_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("lastName", FilterOperator.LIKE));
+            User.EMAIL_ADDRESS_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("emailAddress", FilterOperator.LIKE));
+            User.TELEPHONE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("telephone", FilterOperator.LIKE));
+            User.BIRTH_DATE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("birthDate", FilterOperator.EQUALS));
+        }
     }
     
     @Override
@@ -40,6 +51,9 @@ public class HibernateUserService extends HibernateService<User, Long> implement
             user.setState(UserState.VOTED);
             session.saveOrUpdate(user);
             for(Vote vote : votes){
+                Track track = (Track)session.get(Track.class, vote.getTrackId());
+                track.setScore(track.getScore()+vote.getScore());
+                session.saveOrUpdate(track);
                 vote.setUserId(user.getUserId());
                 session.saveOrUpdate(vote);
             }
