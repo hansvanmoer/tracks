@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.event.DragDropEvent;
 import org.ritz.music.model.Track;
@@ -110,6 +112,18 @@ public class TrackList implements Serializable {
         this.update();
     }
     
+    public void deselect(Long trackId){
+        int index = -1;
+        for(int i = 0;i<selectedTracks.size() && index == -1; i++){
+            if(selectedTracks.get(i).getTrackId().equals(trackId)){
+                index = i;
+            }
+        }
+        if(index != -1){
+            selectedTracks.remove(index);
+        }
+    }
+    
     public boolean isSelectionComplete(){
         return selectedTracks.size() == ApplicationConstants.SELECTED_TRACKS_COUNT;
     }
@@ -121,6 +135,11 @@ public class TrackList implements Serializable {
     public void trackDropped(AjaxBehaviorEvent event) {
         Track track = ((Track) ((DragDropEvent) event).getData());
         select(track);
+    }
+    
+    public void removeSelectedTrack(ActionEvent event) {
+        Long trackId = Long.parseLong(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trackId"));
+        deselect(trackId);
     }
 
     private Track getSelectedTrackById(long id) {

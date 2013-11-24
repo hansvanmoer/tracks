@@ -13,6 +13,10 @@ import org.ritz.music.service.SettingService;
  */
 public class Settings {
 
+    private static final String VOTING_ENABLED = "votingEnabled";
+    private static final String DISPLAY_RESULTS = "displayScores";
+    private static final String ANSWER = "answer";
+    
     private SettingService settingService;
 
     public Settings() {
@@ -44,7 +48,40 @@ public class Settings {
             return Boolean.parseBoolean(value);
         }
     }
+    
+    public Integer getInteger(String key, Integer defaultValue) throws MusicServiceException {
+        String value = settingService.getSettingValue(key);
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return Integer.parseInt(value);
+        }
+    }
+    
+    public int getAnswer() throws MusicServiceException{
+        return getInteger(ANSWER, 1);
+    }
+    
+    public void setAnswer(int answer) throws MusicServiceException{
+        settingService.setSetting(ANSWER, answer);
+    }
 
+    public boolean isVotingEnabled() throws MusicServiceException{
+        return getBoolean(VOTING_ENABLED, true);
+    }
+    
+    public void setVotingEnabled(boolean votingEnabled) throws MusicServiceException{
+        settingService.setSetting(VOTING_ENABLED, votingEnabled);
+    }
+    
+    public boolean isDisplayResults() throws MusicServiceException{
+        return getBoolean(DISPLAY_RESULTS, false);
+    }
+    
+    public void setDisplayResults(boolean displayResults) throws MusicServiceException{
+        settingService.setSetting(DISPLAY_RESULTS, displayResults);
+    }
+    
     public SettingService getSettingService() {
         return settingService;
     }

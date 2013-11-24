@@ -3,87 +3,111 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
-    <h:head>
-        <link href="css/tracks.css" rel="stylesheet"></link>
-        <script type="text/javascript" src="js/tracks.js"/>
-    </h:head>
+    <h:head></h:head>
     <h:body>
-        <h3>Administrator module</h3>
-        <h:form>
-            <p:tabView id="tabs">
-                <p:tab id="trackTab" title="Tracks">
-                    <p:dataTable var="track" value="#{administrator.tracks}" paginator="true" rows="10"  
-                                 currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
-                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
-                                 rowsPerPageTemplate="5,10,15" selectionMode="single" id="trackTable" lazy="true">
-                        <p:column headerText="Title" sortBy="#{track.title}" filterBy="#{track.title}">  
-                            <h:outputText value="#{track.title}" />  
-                        </p:column>  
-                        <p:column headerText="Artist" sortBy="#{track.artist.name}" filterBy="#{track.artist.name}">  
-                            <h:outputText value="#{track.artist.name}" />  
-                        </p:column>  
-                        <p:column headerText="Score" sortBy="#{track.score}">  
-                            <h:outputText value="#{track.score}" />  
-                        </p:column> 
-                        <p:column headerText="Rank" sortBy="#{track.rank}">  
-                            <h:outputText value="#{track.rank}" />  
-                        </p:column> 
-                    </p:dataTable>
-                    <p:panelGrid columns="2">
-                        <p:outputLabel for="trackDataFormat" value="Output data format"/>
-                        <p:selectOneMenu id="trackDataFormat" value="#{administrator.trackExporter.dataFormat}" effect="fade" converter="#{dataFormatFactory}">  
-                            <f:selectItems value="#{dataFormatFactory.dataFormats}" var="format" itemLabel="#{format.name}" itemValue="#{format}"/>  
-                        </p:selectOneMenu>
-                        <p:outputLabel for="trackIncludeHeader" value="Include header"/>
-                        <p:selectBooleanCheckbox id="trackIncludeHeader" value="#{administrator.trackExporter.includeHeader}"/> 
-                        <p:commandButton id="downloadTracks" value="Download" ajax="false" icon="ui-icon-arrowthichk-s">
-                            <p:fileDownload value="#{administrator.trackExporter.content}" />  
-                        </p:commandButton>
-                    </p:panelGrid>
-                </p:tab>
-                <p:tab id="userTab" title="Voters">
-                    <p:dataTable var="user" value="#{administrator.users}" paginator="true" rows="10"  
-                                 currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
-                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
-                                 rowsPerPageTemplate="5,10,15" selectionMode="single" id="userTable" lazy="true">
-                        <p:column headerText="First name" sortBy="#{user.firstName}" filterBy="#{user.firstName}">  
-                            <h:outputText value="#{user.firstName}" />  
-                        </p:column>  
-                        <p:column headerText="Last name" sortBy="#{user.lastName}" filterBy="#{user.lastName}">  
-                            <h:outputText value="#{user.lastName}" />  
-                        </p:column>  
-                        <p:column headerText="Email address" sortBy="#{user.emailAddress}" filterBy="#{user.emailAddress}">  
-                            <h:outputText value="#{user.emailAddress}" />  
-                        </p:column> 
-                        <p:column headerText="Telephone" sortBy="#{user.telephone}" filterBy="#{user.telephone}">  
-                            <h:outputText value="#{user.telephone}" />  
-                        </p:column>
-                        <p:column headerText="Birt date" sortBy="#{user.birthDate}">  
-                            <h:outputText value="#{user.birthDate}"/>
-                        </p:column>
-                        <p:column headerText="Answer" sortBy="#{user.answer}">
-                            <h:outputText value="#{user.answer}"/>
-                        </p:column>
-                    </p:dataTable>
-                    <p:panelGrid columns="2">
-                        <p:outputLabel for="userDataFormat" value="Output data format"/>
-                        <p:selectOneMenu id="userDataFormat" value="#{administrator.userExporter.dataFormat}" effect="fade" converter="#{dataFormatFactory}">  
-                            <f:selectItems value="#{dataFormatFactory.dataFormats}" var="format" itemLabel="#{format.name}" itemValue="#{format}"/>  
-                        </p:selectOneMenu>
-                        <p:outputLabel for="userIncludeHeader" value="Include header"/>
-                        <p:selectBooleanCheckbox id="userIncludeHeader" value="#{administrator.userExporter.includeHeader}"/> 
-                        <p:commandButton id="downloadUsers" value="Download" ajax="false" icon="ui-icon-arrowthichk-s">
-                            <p:fileDownload value="#{administrator.userExporter.content}" />  
-                        </p:commandButton>
-                    </p:panelGrid>
-                </p:tab>
-                <p:tab id="adminTab" title="Manage">
-
-                </p:tab>
-            </p:tabView>
-        </h:form>
-
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="tracks.css"/>
+        </f:facet>
+        <ui:include src="resources/html/header.xhtml"/>
+        <section class="content">
+            <h3>Administrator module</h3>
+            <h:form>
+                <p:tabView id="tabs">
+                    <p:tab id="trackTab" title="Tracks">
+                        <p:dataTable var="track" value="#{administrator.tracks}" paginator="true" rows="10"  
+                                     currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                     rowsPerPageTemplate="5,10,15" selectionMode="single" id="trackTable" lazy="true">
+                            <p:column headerText="Title" sortBy="#{track.title}" filterBy="#{track.title}">  
+                                <h:outputText value="#{track.title}" />  
+                            </p:column>  
+                            <p:column headerText="Artist" sortBy="#{track.artist.name}" filterBy="#{track.artist.name}">  
+                                <h:outputText value="#{track.artist.name}" />  
+                            </p:column>  
+                            <p:column headerText="Score" sortBy="#{track.score}">  
+                                <h:outputText value="#{track.score}" />  
+                            </p:column> 
+                            <p:column headerText="Rank" sortBy="#{track.rank}">  
+                                <h:outputText value="#{track.rank}" />  
+                            </p:column> 
+                        </p:dataTable>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="trackDataFormat" value="Output data format"/>
+                            <p:selectOneMenu id="trackDataFormat" value="#{administrator.trackExporter.dataFormat}" effect="fade" converter="#{dataFormatFactory}">  
+                                <f:selectItems value="#{dataFormatFactory.dataFormats}" var="format" itemLabel="#{format.name}" itemValue="#{format}"/>  
+                            </p:selectOneMenu>
+                            <p:outputLabel for="trackIncludeHeader" value="Include header"/>
+                            <p:selectBooleanCheckbox id="trackIncludeHeader" value="#{administrator.trackExporter.includeHeader}"/> 
+                            <p:commandButton id="downloadTracks" value="Download" ajax="false" icon="ui-icon-arrowthichk-s">
+                                <p:fileDownload value="#{administrator.trackExporter.content}" />  
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="userTab" title="Voters">
+                        <p:outputLabel value="Answer is the answer given by the specific user"/>
+                        <p:outputLabel value="Score is the difference between the answer given by the user and the real answer (so the lowest score wins). Score is calculated when the 'finish' button is pushed in the manage tab."/>
+                        <p:dataTable var="user" value="#{administrator.users}" paginator="true" rows="10"  
+                                     currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                     rowsPerPageTemplate="5,10,15" selectionMode="single" id="userTable" lazy="true">
+                            <p:column headerText="First name" sortBy="#{user.firstName}" filterBy="#{user.firstName}">  
+                                <h:outputText value="#{user.firstName}" />  
+                            </p:column>  
+                            <p:column headerText="Last name" sortBy="#{user.lastName}" filterBy="#{user.lastName}">  
+                                <h:outputText value="#{user.lastName}" />  
+                            </p:column>  
+                            <p:column headerText="Email address" sortBy="#{user.emailAddress}" filterBy="#{user.emailAddress}">  
+                                <h:outputText value="#{user.emailAddress}" />  
+                            </p:column> 
+                            <p:column headerText="Telephone" sortBy="#{user.telephone}" filterBy="#{user.telephone}">  
+                                <h:outputText value="#{user.telephone}" />  
+                            </p:column>
+                            <p:column headerText="Birt date" sortBy="#{user.birthDate}">  
+                                <h:outputText value="#{user.birthDate}"/>
+                            </p:column>
+                            <p:column headerText="Answer" sortBy="#{user.answer}">
+                                <h:outputText value="#{user.answer}"/>
+                            </p:column>
+                            <p:column headerText="Score" sortBy="#{user.score}">
+                                <h:outputText value="#{user.score}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="userDataFormat" value="Output data format"/>
+                            <p:selectOneMenu id="userDataFormat" value="#{administrator.userExporter.dataFormat}" effect="fade" converter="#{dataFormatFactory}">  
+                                <f:selectItems value="#{dataFormatFactory.dataFormats}" var="format" itemLabel="#{format.name}" itemValue="#{format}"/>  
+                            </p:selectOneMenu>
+                            <p:outputLabel for="userIncludeHeader" value="Include header"/>
+                            <p:selectBooleanCheckbox id="userIncludeHeader" value="#{administrator.userExporter.includeHeader}"/> 
+                            <p:commandButton id="downloadUsers" value="Download" ajax="false" icon="ui-icon-arrowthichk-s">
+                                <p:fileDownload value="#{administrator.userExporter.content}" />  
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="adminTab" title="Manage">
+                        <fieldset id="endVoting" title="End voting">
+                            <p:outputLabel for="answer" value="The correct answer"/>
+                            <p:inputText id="answer" value="#{settings.answer}" required="true" validatorMessage="The answer should be a positive integer">
+                                <f:validateLongRange minimum="1"/>
+                            </p:inputText>
+                            <p:commandButton id="endVoting" value="End voting" rendered="#{settings.votingEnabled}" action="#{administrator.endVoting()}" ajax="false" update="endVoting"/>
+                            <p:outputPanel rendered="#{!settings.votingEnabled and !settings.displayResults}">
+                                <p:outputLabel value="Scores and track ranks have been calculated."/>
+                                <p:outputLabel value="User scores are calculated as the difference between the voter answer and the actual value.lowest score is the winner."/>
+                                <p:outputLabel value="You can check the results in the tracks and user tabs"/>
+                                <p:outputLabel value="Scores are not published on the site until the 'publish results' button is hit"/>
+                                <p:commandButton id="startVoting" value="Start voting" action="#{settings.setVotingEnabled(true)}" ajax="false" update="endVoting"/>
+                                <p:commandButton id="publishResults" value="Publish results" action="#{settings.setDisplayResults(true)}" ajax="false" update="endVoting"/>
+                            </p:outputPanel>
+                            <p:outputPanel rendered="#{settings.displayResults}">
+                                <p:commandButton id="hideResults" value="Hide results" action="#{settings.setDisplayResults(false)}" ajax="false" update="endVoting"/>
+                            </p:outputPanel>
+                        </fieldset>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </section>
+        <ui:include src="resources/html/footer.xhtml"/>
     </h:body>
 
 </html>

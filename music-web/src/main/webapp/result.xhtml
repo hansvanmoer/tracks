@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="tracks.css"/>
+        </f:facet>
+        <ui:include src="resources/html/header.xhtml"/>
+        <section class="content">
+            <h3>Voting is ended</h3>
+            <h:form>
+                <p:fieldset rendered="#{settings.displayResults}" >
+                    <p:dataTable var="track" value="#{results.tracks}" paginator="true" rows="10"  
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="5,10,15" selectionMode="single" lazy="true" sortBy="#{track.rank}" sortOrder="ascending">
+                        <p:column headerText="Title">
+                            <h:outputText value="#{track.title}" />  
+                        </p:column>  
+                        <p:column headerText="Artist">  
+                            <h:outputText value="#{track.artist.name}" />  
+                        </p:column>  
+                        <p:column headerText="Rank">  
+                            <h:outputText value="#{track.rank}" />  
+                        </p:column> 
+                    </p:dataTable>
+                    <p:dataTable var="user" value="#{results.users}" paginator="true" rows="10"  
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                                 rowsPerPageTemplate="5,10,15" selectionMode="single" lazy="true" sortBy="#{user.score}" sortOrder="ascending">
+                        <p:column headerText="First name">
+                            <h:outputText value="#{user.firstName}" />  
+                        </p:column>  
+                        <p:column headerText="Last name">  
+                            <h:outputText value="#{user.lastName}" />  
+                        </p:column>  
+                        <p:column headerText="Answer">  
+                            <h:outputText value="#{user.answer}" />
+                        </p:column> 
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+        </section>
+        <ui:include src="resources/html/footer.xhtml"/>
+    </h:body>
+</html>

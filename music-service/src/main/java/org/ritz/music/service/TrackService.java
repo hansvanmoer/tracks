@@ -33,4 +33,6 @@ public interface TrackService extends FacetedSearch<Track> {
     Track getTrack(Long trackId) throws MusicServiceException;
     
     void updateScores() throws MusicServiceException;
+    
+    void updateRanks() throws MusicServiceException;
 }

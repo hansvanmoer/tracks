@@ -34,6 +34,8 @@ public class HibernateUserService extends HibernateService<User, Long> implement
             User.EMAIL_ADDRESS_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("emailAddress", FilterOperator.LIKE));
             User.TELEPHONE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("telephone", FilterOperator.LIKE));
             User.BIRTH_DATE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("birthDate", FilterOperator.EQUALS));
+            User.ANSWER_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("answer", FilterOperator.EQUALS));
+            User.SCORE_FACET.setHandle(SearchHandle.class, new BasicSearchHandle("score", FilterOperator.EQUALS));
         }
     }
     
@@ -73,6 +75,19 @@ public class HibernateUserService extends HibernateService<User, Long> implement
     @Override
     public User getUser(Long userId) throws MusicServiceException {
         return super.get(userId);
+    }
+    
+    public void updateScores(Integer answer) throws MusicServiceException{
+        Session session = getSession();
+        Transaction transaction = null;
+        try{
+            session.createSQLQuery("update user_ set score=abs( "+answer+" - answer)").executeUpdate();
+        }catch(HibernateException e){
+            rollback(transaction);
+            throw new MusicServiceException("unable to update user scores", e);
+        }finally{
+            close(session, transaction);
+        }
     }
     
 }

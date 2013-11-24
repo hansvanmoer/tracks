@@ -21,4 +21,6 @@ public interface UserService extends FacetedSearch<User>{
     
     User getUser(Long userId) throws MusicServiceException;
     
+    void updateScores(Integer answer) throws MusicServiceException;
+    
 }

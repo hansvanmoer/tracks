@@ -3,104 +3,109 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
-    <h:head>
-        <link href="css/tracks.css" rel="stylesheet"></link>
-        <script type="text/javascript" src="js/tracks.js"/>
-    </h:head>
+    <f:event listener="#{votingEnabledListener.handleEvent}" type="preRenderView"/>
+    <f:event listener="#{voter.checkAlreadyVoted}" type="preRenderView"/>
+    <h:head></h:head>
     <h:body>
-        <h:form>
-            <h:messages showDetail="true" showSummary="true"/>
-            <p:fieldset id="confirmVoteFields" legend="Confirm Vote">
-                <p:commandLink action="tracks" value="Back" ajax="false" update="@this" immediate="true" />
-                <h:inputHidden id="selectedTracks" value="#{trackList.selectedTrackCodes}"/>
-                <h:outputLabel for="selectedTrackPanel" value="Please confirm your vote"/>
-                <p:outputPanel id="selectedTrackPanel">
-                    <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
-                    <p:orderList id="selectedTrackTable" itemValue="#{track}" value="#{trackList.selectedTracks}" converter="#{trackConverter}" var="track" controlsLocation="left" styleClass="selectedTracks">
-                        <p:column>
-                            <f:facet name="header">  
-                                <h:outputText value="Title" />  
-                            </f:facet>  
-                            <h:outputText value="#{track.title}" />  
-                        </p:column>  
-                        <p:column>
-                            <f:facet name="header">  
-                                <h:outputText value="Artist" />  
-                            </f:facet>  
-                            <h:outputText value="#{track.artist.name}" />  
-                        </p:column>
-                    </p:orderList>
-                </p:outputPanel>
-                <h:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="firstName" value="First name"/>   
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="firstName" required="true" value="#{voter.user.firstName}" validatorMessage="First name is a required field">
-                                <f:validateLength minimum="1" maximum="64"/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="lastName" value="Last name"/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" id="lastName" value="#{voter.user.lastName}" validatorMessage="Last name is a required field">
-                                <f:validateLength minimum="1" maximum="64"/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="email" value="email"/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="email" required="true" value="#{voter.user.emailAddress}" validatorMessage="Not a valid email address">
-                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="telephone" value="telephone"/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="telephone" required="true" value="#{voter.user.telephone}" validatorMessage="Telephone is a required field">
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="birthDate" value="Birth date"/>
-                        </p:column>
-                        <p:column>
-                            <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" validatorMessage="Birth date is a required field">
-                            </p:calendar>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">
-                            <h:outputLabel value="Wat is de grootte in kilobytes van alle tracks in de volledige liedjes lijst geconverteerd naar 245 kilobytes per seonde. (1 kilobyte = 1*2^10 bytes)"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="answer" value="Antwoord schiftingsvraag:"/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="answer" value="#{voter.user.answer}" required="true">
-                                <f:validateLongRange minimum="1"/>
-                                <f:validateRequired/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                </h:panelGrid>
-                <p:commandButton ajax="false" value="Vote" action="#{voter.vote}" rendered="#{trackList.selectionComplete}" />
-                <p:commandLink action="tracks" value="Select more tracks before voting" ajax="false" immediate="true" rendered="#{!trackList.selectionComplete}" />
-        </p:fieldset>
-    </h:form>
-</h:body>
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="tracks.css"/>
+        </f:facet>
+        <ui:include src="resources/html/header.xhtml"/>
+        <section class="content">
+            <h:form>
+                <h:messages showDetail="true" showSummary="true"/>
+                <p:fieldset id="confirmVoteFields" legend="Confirm Vote">
+                    <p:commandLink action="tracks" value="Back" ajax="false" update="@this" immediate="true" />
+                    <h:inputHidden id="selectedTracks" value="#{trackList.selectedTrackCodes}"/>
+                    <h:outputLabel for="selectedTrackPanel" value="Please confirm your vote"/>
+                    <p:outputPanel id="selectedTrackPanel">
+                        <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
+                        <p:orderList id="selectedTrackTable" itemValue="#{track}" value="#{trackList.selectedTracks}" converter="#{trackConverter}" var="track" controlsLocation="left" styleClass="selectedTracks">
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="Title" />  
+                                </f:facet>  
+                                <h:outputText value="#{track.title}" />  
+                            </p:column>  
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="Artist" />  
+                                </f:facet>  
+                                <h:outputText value="#{track.artist.name}" />  
+                            </p:column>
+                        </p:orderList>
+                    </p:outputPanel>
+                    <h:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="firstName" value="First name"/>   
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="firstName" required="true" value="#{voter.user.firstName}" validatorMessage="First name is a required field">
+                                    <f:validateLength minimum="1" maximum="64"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="lastName" value="Last name"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" id="lastName" value="#{voter.user.lastName}" validatorMessage="Last name is a required field">
+                                    <f:validateLength minimum="1" maximum="64"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="email" value="email"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="email" required="true" value="#{voter.user.emailAddress}" validatorMessage="Not a valid email address">
+                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="telephone" value="telephone"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="telephone" required="true" value="#{voter.user.telephone}" validatorMessage="Telephone is a required field">
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="birthDate" value="Birth date"/>
+                            </p:column>
+                            <p:column>
+                                <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" validatorMessage="Birth date is a required field">
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:outputLabel value="Wat is de grootte in kilobytes van alle tracks in de volledige liedjes lijst geconverteerd naar 245 kilobytes per seonde. (1 kilobyte = 1*2^10 bytes)"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="answer" value="Antwoord schiftingsvraag:"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="answer" value="#{voter.user.answer}" required="true">
+                                    <f:validateLongRange minimum="1"/>
+                                    <f:validateRequired/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                    <p:commandButton ajax="false" value="Vote" action="#{voter.vote}" rendered="#{trackList.selectionComplete}" />
+                    <p:commandLink action="tracks" value="Select more tracks before voting" ajax="false" immediate="true" rendered="#{!trackList.selectionComplete}" />
+                </p:fieldset>
+            </h:form>
+        </section>
+        <ui:include src="resources/html/footer.xhtml"/>
+    </h:body>
 </html>

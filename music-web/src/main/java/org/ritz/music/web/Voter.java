@@ -8,8 +8,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import org.ritz.music.model.User;
 import org.ritz.music.model.UserState;
 import org.ritz.music.model.Vote;
@@ -23,22 +26,20 @@ import org.slf4j.LoggerFactory;
  *
  * @author hans
  */
-public class Voter implements Serializable{
+public class Voter implements Serializable {
 
     private static Logger LOG = LoggerFactory.getLogger(Voter.class);
-    
     private User user;
     private Integer answer;
-    
     private UserService userService;
-    private VoteService voteService;
     private TrackList trackList;
-    
-    public Voter(){
-        this.user = new User("","","","",new Date(), 0);
+    private Settings settings;
+
+    public Voter() {
+        this.user = new User("", "", "", "", new Date(), 0);
         this.answer = 0;
     }
-        
+
     public User getUser() {
         return user;
     }
@@ -54,32 +55,32 @@ public class Voter implements Serializable{
     public void setAnswer(Integer answer) {
         this.answer = answer;
     }
-    
-    public String vote(){
-        if(trackList.isSelectionComplete()){
-            try{
+
+    public String vote() {
+        if (trackList.isSelectionComplete()) {
+            try {
                 List<Vote> votes = new ArrayList<Vote>(ApplicationConstants.SELECTED_TRACKS_COUNT);
-                for(int i = 0;i<ApplicationConstants.SELECTED_TRACKS_COUNT; i++){
+                for (int i = 0; i < ApplicationConstants.SELECTED_TRACKS_COUNT; i++) {
                     votes.add(new Vote(user.getUserId(), trackList.getSelectedTracks().get(i).getTrackId(), ApplicationConstants.SELECTED_TRACKS_SCORES[i]));
                 }
                 userService.addUser(user, votes);
                 return "confirm";
-            }catch(MusicServiceException e){
+            } catch (MusicServiceException e) {
                 LOG.info(String.format("failed to add user: '%s'", user.getEmailAddress()), e);
-                FacesContext.getCurrentInstance().addMessage("vote-failed", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Already voted","A user with this email address has already voted"));
+                FacesContext.getCurrentInstance().addMessage("vote-failed", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Already voted", "A user with this email address has already voted"));
             }
-        }else{
-            FacesContext.getCurrentInstance().addMessage("vote-failed", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incomplete vote","You should select more tracks"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage("vote-failed", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incomplete vote", "You should select more tracks"));
         }
         return "vote";
     }
-    
-    public void reset(){
-        this.user = new User("","","","",new Date(), 0);
+
+    public void reset() {
+        this.user = new User("", "", "", "", new Date(), 0);
         this.answer = 0;
     }
-    
-    public String logout(){
+
+    public String logout() {
         reset();
         this.trackList.reset();
         return "tracks";
@@ -100,9 +101,30 @@ public class Voter implements Serializable{
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    
-    public boolean hasVoted(){
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public boolean hasVoted() {
         return this.user.getState() == UserState.VOTED;
     }
-    
+
+    public void checkAlreadyVoted(ComponentSystemEvent event) {
+        if (hasVoted()) {
+            try {
+                if (settings.isVotingEnabled()) {
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    ExternalContext ec = fc.getExternalContext();
+                    ec.redirect(ec.getRequestContextPath()+"/confirm.xhtml");
+                }
+            } catch (Exception e) {
+                LOG.error("unable to check votingEnabled setting", e);
+            }
+        }
+    }
 }

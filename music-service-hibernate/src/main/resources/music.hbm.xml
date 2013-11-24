@@ -16,6 +16,7 @@
       </type>
     </property>
     <property name="answer" column="answer" not-null="true" type="int"/>
+    <property name="score" column="score" not-null="true" type="int"/>
     <property column="created_time" name="createdTime" not-null="true" type="timestamp"/>
   </class>
   <class name="Artist" table="artist">

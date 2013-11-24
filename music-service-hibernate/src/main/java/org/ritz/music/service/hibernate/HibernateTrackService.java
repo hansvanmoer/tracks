@@ -32,6 +32,7 @@ import org.ritz.music.service.hibernate.facet.SearchHandle;
 public class HibernateTrackService extends HibernateService<Track, Long> implements TrackService, Serializable{
     
     private static final int TRACKS_PER_RUN = 100;
+    private static final int MAX_SCORE_PER_VOTE = 5;
     
     public HibernateTrackService(){
         super(Track.class);
@@ -91,6 +92,39 @@ public class HibernateTrackService extends HibernateService<Track, Long> impleme
                 }
                 next = tracks.size() == TRACKS_PER_RUN;
                 index+=TRACKS_PER_RUN;
+            }
+        }catch(Exception e){
+            rollback(transaction);
+            throw new MusicServiceException("unable to update score", e);
+        }finally{
+            close(session, transaction);
+        }
+    }
+
+    private static String createUpdateRanksQuery(int maxScorePerVote){
+        StringBuilder query = new StringBuilder("select track_id, title, artist, keywords, score, rank");
+        StringBuilder order = new StringBuilder("score desc");
+        for(int i = 1;i<=maxScorePerVote;i++){
+            query.append(String.format(", (select count(*) from vote v where v.track_id = t.track_id and v.score = %1$d ) as votes_%1$d", i));
+            order.append(String.format(", votes_%1$d desc", i));
+        }
+        order.append(", title");
+        query.append(" from track t order by ");
+        return query.append(order).toString();
+    }
+    
+    private static String UPDATE_RANKS_QUERY = createUpdateRanksQuery(MAX_SCORE_PER_VOTE);
+    
+    @Override
+    public void updateRanks() throws MusicServiceException {
+        Session session = getSession();
+        Transaction transaction = beginTransaction(session);
+        try{
+            session.createSQLQuery("update track set score=coalesce( (select sum(score) from vote where vote.track_id = track.track_id), 0)").executeUpdate();
+            List<Track> tracks = (List<Track>)session.createSQLQuery(UPDATE_RANKS_QUERY).addEntity(Track.class).list();
+            for(int i = 0;i<tracks.size(); i++){
+                tracks.get(i).setRank(i+1);
+                session.saveOrUpdate(tracks.get(i));
             }
         }catch(Exception e){
             rollback(transaction);

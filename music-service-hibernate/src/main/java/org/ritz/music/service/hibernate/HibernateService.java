@@ -105,7 +105,7 @@ public class HibernateService<Entity extends Serializable, Key extends Serializa
                     ((Long)countCriteria.uniqueResult()).intValue());  //ninja API change fro Hibernat
         }catch(HibernateException e){
             rollback(transaction);
-            throw new MusicServiceException(String.format("unable tocreate or update \"%s\"",entityClass.getName()), e);
+            throw new MusicServiceException(String.format("unable to get list of type \"%s\"",entityClass.getName()), e);
         }finally{
             close(session, transaction);
         }
@@ -117,7 +117,7 @@ public class HibernateService<Entity extends Serializable, Key extends Serializa
         try{
             return (Entity)criteriaPreparator.prepare(session.createCriteria(entityClass)).uniqueResult();
         }catch(HibernateException e){
-            throw new MusicServiceException(String.format("unable tocreate or update \"%s\"",entityClass.getName()), e);
+            throw new MusicServiceException(String.format("unable to fetch unique result for type \"%s\"",entityClass.getName()), e);
         }finally{
             close(session, transaction);
         }
@@ -152,7 +152,7 @@ public class HibernateService<Entity extends Serializable, Key extends Serializa
             return new QueryResult<Entity>(results, count);
         }catch(Exception e){
             rollback(transaction);
-            throw new MusicServiceException("unable to update score", e);
+            throw new MusicServiceException("unable to execute faceted search", e);
         }finally{
             close(session, transaction);
         }
@@ -180,7 +180,7 @@ public class HibernateService<Entity extends Serializable, Key extends Serializa
             return new QueryResult<Entity>(results, count);
         }catch(Exception e){
             rollback(transaction);
-            throw new MusicServiceException("unable to update score", e);
+            throw new MusicServiceException("unable to execute faceted search", e);
         }finally{
             close(session, transaction);
         }

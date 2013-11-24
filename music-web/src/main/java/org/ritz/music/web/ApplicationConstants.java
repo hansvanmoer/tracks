@@ -15,7 +15,5 @@ public final class ApplicationConstants {
     
     public static final int SELECTED_TRACKS_COUNT = 5;
     
-    public static final int[] SELECTED_TRACKS_SCORES = new int[]{ 5, 4, 3, 2, 1};
-    
-    
+    public static final int[] SELECTED_TRACKS_SCORES = new int[]{ 5, 4, 3, 2, 1};    
 }

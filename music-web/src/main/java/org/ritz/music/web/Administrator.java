@@ -10,9 +10,12 @@ import java.text.SimpleDateFormat;
 import javax.annotation.PostConstruct;
 import org.ritz.music.model.Track;
 import org.ritz.music.model.User;
+import org.ritz.music.service.MusicServiceException;
 import org.ritz.music.service.TrackService;
 import org.ritz.music.service.UserService;
 import org.ritz.music.web.data.OutputHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,12 +23,16 @@ import org.ritz.music.web.data.OutputHandle;
  */
 public class Administrator implements Serializable{
     
+    private static final Logger LOG = LoggerFactory.getLogger(Administrator.class);
+    
     private TrackService trackService;
     private FacetedDataModel<Track> tracks;
     private DataExporter<Track> trackExporter;
     private UserService userService;
     private FacetedDataModel<User> users;
     private DataExporter<User> userExporter;
+    
+    private Settings settings;
     
     private DataFormatFactory dataFormatFactory;
     
@@ -99,8 +106,16 @@ public class Administrator implements Serializable{
         }
         this.tracks = new FacetedDataModel<Track>(trackService, Track.TITLE_FACET, Track.ARTIST_FACET, Track.SCORE_FACET, Track.RANK_FACET);
         this.trackExporter = new DataExporter<Track>(this.tracks, TRACK_FILE_NAME, true, dataFormatFactory.getDefaultDataFormat());
-        this.users = new FacetedDataModel<User>(userService, User.FIRST_NAME_FACET, User.LAST_NAME_FACET, User.EMAIL_ADDRESS_FACET, User.TELEPHONE_FACET, User.BIRTH_DATE_FACET, User.ANSWER_FACET);
+        this.users = new FacetedDataModel<User>(userService, User.FIRST_NAME_FACET, User.LAST_NAME_FACET, User.EMAIL_ADDRESS_FACET, User.TELEPHONE_FACET, User.BIRTH_DATE_FACET, User.ANSWER_FACET, User.SCORE_FACET);
         this.userExporter = new DataExporter<User>(this.users, USER_FILE_NAME, true, dataFormatFactory.getDefaultDataFormat());
+    }
+    
+    public void endVoting() throws MusicServiceException{
+        LOG.info("voting is done, calculating results");
+        int answer = settings.getAnswer();
+        userService.updateScores(answer);
+        trackService.updateRanks();
+        settings.setVotingEnabled(false);
     }
 
     public FacetedDataModel<Track> getTracks() {
@@ -141,5 +156,13 @@ public class Administrator implements Serializable{
 
     public DataExporter<User> getUserExporter() {
         return userExporter;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

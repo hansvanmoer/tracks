@@ -5,10 +5,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
     version="2.1">
-    
-    <lifecycle>
-        <phase-listener>org.ritz.music.web.RedirectPhaseListener</phase-listener>
-    </lifecycle>
 
     <managed-bean eager="true">
         <managed-bean-name>hibernateConfigurator</managed-bean-name>
@@ -108,6 +104,16 @@
     </managed-bean>
     
     <managed-bean>
+        <managed-bean-name>votingEnabledListener</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.VotingEnabledListener</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>settings</property-name>
+            <value>#{settings}</value>
+        </managed-property>
+    </managed-bean>
+    
+    <managed-bean>
         <managed-bean-name>trackList</managed-bean-name>
         <managed-bean-class>org.ritz.music.web.TrackList</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
@@ -129,6 +135,10 @@
             <property-name>trackList</property-name>
             <value>#{trackList}</value>
         </managed-property>
+        <managed-property>
+            <property-name>settings</property-name>
+            <value>#{settings}</value>
+        </managed-property>
     </managed-bean>
       
     <managed-bean>
@@ -147,7 +157,23 @@
             <property-name>dataFormatFactory</property-name>
             <value>#{dataFormatFactory}</value>
         </managed-property>
+        <managed-property>
+            <property-name>settings</property-name>
+            <value>#{settings}</value>
+        </managed-property>
     </managed-bean>
 
-    
+    <managed-bean>
+        <managed-bean-name>results</managed-bean-name>
+        <managed-bean-class>org.ritz.music.web.Results</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>trackService</property-name>
+            <value>#{trackService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>userService</property-name>
+            <value>#{userService}</value>
+        </managed-property>
+    </managed-bean>
 </faces-config>
