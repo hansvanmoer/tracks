@@ -9,14 +9,14 @@
     <f:event listener="#{voter.checkAlreadyVoted}" type="preRenderView"/>
     <f:event listener="#{votingEnabledListener.handleEvent}" type="preRenderView"/>
     <h:head></h:head>
-    <h:body>
+    <h:body styleClass="tracksPage">
         <f:facet name="last">
             <h:outputStylesheet library="css" name="tracks.css"/>
         </f:facet>
         <ui:include src="resources/html/header.xhtml"/>
         <section class="content">
             <h:form>
-                <p:fieldset id="selectableTracks" legend="Tracks" styleClass="tracks selectableTracks">  
+                <p:fieldset id="selectableTracks" legend="Songs" styleClass="tracks selectableTracks">  
                     <p:outputLabel value="Filter:"/>
                     <p:inputText value="${trackList.searchQuery}">
                         <p:ajax event="keyup" listener="#{trackList.queryChanged}" update="trackTable"/>
@@ -27,7 +27,7 @@
                                  rowsPerPageTemplate="5,10,15,20,50" styleClass="trackTable">  
                         <p:column>  
                             <f:facet name="header">  
-                                <h:outputText value="Title" />  
+                                <h:outputText value="Titel" />  
                             </f:facet>  
                             <h:outputText id="trackTitle" value="#{track.title}" />  
                             <p:draggable for="trackTitle" revert="true" />
@@ -35,19 +35,20 @@
 
                         <p:column>  
                             <f:facet name="header">  
-                                <h:outputText value="Artist" />  
+                                <h:outputText value="Artiest" />  
                             </f:facet>  
                             <h:outputText value="#{track.artist.name}" />  
                         </p:column>
                     </p:dataTable>
+                    <p:outputLabel value="Versleep je favoriete 5 liedjes naar de lijst aan de rechterkant."/>
                 </p:fieldset>            
-                <p:fieldset id="selectedTrackFieldSet" legend="Selection" styleClass="tracks selectedTracks">
+                <p:fieldset id="selectedTrackFieldSet" legend="Mijn top 5" styleClass="tracks selectedTracks">
                     <p:outputPanel id="selectedTrackPanel" styleClass="selectedTrackPanel">
-                        <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
+                        <h:outputText value="Sleep geselecteerde songs hier" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
                         <p:orderList id="selectedTrackTable" itemValue="#{track}" value="#{trackList.selectedTracks}" converter="#{trackConverter}" var="track" controlsLocation="left" styleClass="selectedTracks">
                             <p:column>
                                 <f:facet name="header">  
-                                    <h:outputText value="Title" />  
+                                    <h:outputText value="Titel" />  
                                 </f:facet>  
                                 <h:outputText id="selectedTrackTitle" value="#{track.title}" />
                             </p:column>
@@ -58,8 +59,9 @@
                             </p:column>
                         </p:orderList>
                     </p:outputPanel>
+                    <p:outputLabel value="Sorteer je top vijf door de liedjes te verslepen of gebruik de knoppen links." styleClass="sortLabel"/>
                     <p:commandLink action="vote"/>
-                    <p:commandButton id="vote" action="vote" process="@this selectedTracks" value="Vote" ajax="false" update="selectedTrackFieldSet"/>
+                    <p:commandButton id="vote" action="vote" process="@this selectedTracks" value="Verder" ajax="false" update="selectedTrackFieldSet"/>
                 </p:fieldset>
                 <p:droppable for="selectedTrackFieldSet" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="trackTable">
                     <p:ajax listener="#{trackList.trackDropped}" update="selectedTrackPanel trackTable" />

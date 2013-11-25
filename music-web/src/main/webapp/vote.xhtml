@@ -6,87 +6,82 @@
     <f:event listener="#{votingEnabledListener.handleEvent}" type="preRenderView"/>
     <f:event listener="#{voter.checkAlreadyVoted}" type="preRenderView"/>
     <h:head></h:head>
-    <h:body>
+    <h:body styleClass="votePage">
         <f:facet name="last">
             <h:outputStylesheet library="css" name="tracks.css"/>
         </f:facet>
         <ui:include src="resources/html/header.xhtml"/>
         <section class="content">
             <h:form>
-                <h:messages showDetail="true" showSummary="true"/>
-                <p:fieldset id="confirmVoteFields" legend="Confirm Vote">
-                    <p:commandLink action="tracks" value="Back" ajax="false" update="@this" immediate="true" />
-                    <h:inputHidden id="selectedTracks" value="#{trackList.selectedTrackCodes}"/>
-                    <h:outputLabel for="selectedTrackPanel" value="Please confirm your vote"/>
-                    <p:outputPanel id="selectedTrackPanel">
-                        <h:outputText value="Drop selected tracks here" rendered="#{empty trackList.selectedTracks}" style="font-size:24px;" />  
+                <p:commandLink action="tracks" value="Terug naar de songlijst" ajax="false" update="@this" immediate="true" styleClass="link"/>
+                <p:fieldset id="confirmVoteFields" legend="Mijn top 5">
+                    <p:outputPanel id="selectedTrackPanel" styleClass="selectedTrackPanel">
                         <p:orderList id="selectedTrackTable" itemValue="#{track}" value="#{trackList.selectedTracks}" converter="#{trackConverter}" var="track" controlsLocation="left" styleClass="selectedTracks">
                             <p:column>
                                 <f:facet name="header">  
-                                    <h:outputText value="Title" />  
+                                    <h:outputText value="Titel" />  
                                 </f:facet>  
                                 <h:outputText value="#{track.title}" />  
-                            </p:column>  
-                            <p:column>
-                                <f:facet name="header">  
-                                    <h:outputText value="Artist" />  
-                                </f:facet>  
-                                <h:outputText value="#{track.artist.name}" />  
                             </p:column>
                         </p:orderList>
                     </p:outputPanel>
-                    <h:panelGrid>
+                    <h:panelGrid styleClass="voterForm">
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="firstName" value="First name"/>   
+                                <h:outputLabel for="firstName" value="Voornaam"/>   
                             </p:column>
                             <p:column>
-                                <p:inputText id="firstName" required="true" value="#{voter.user.firstName}" validatorMessage="First name is a required field">
+                                <p:inputText id="firstName" required="true" value="#{voter.user.firstName}" requiredMessage="Vul hier je voornaam in" validatorMessage="Je naam mag niet langer zijn dan 64 karakters" label="Voornaam">
                                     <f:validateLength minimum="1" maximum="64"/>
                                 </p:inputText>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="firstNameError" for="firstName"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="lastName" value="Last name"/>
+                                <h:outputLabel for="lastName" value="Achternaam"/>
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" id="lastName" value="#{voter.user.lastName}" validatorMessage="Last name is a required field">
+                                <p:inputText required="true" id="lastName" value="#{voter.user.lastName}" requiredMessage="Vul hier je achternaam in" validatorMessage="Je achternaam mag niet langer zijn dan 64 karakters" label="Achternaam">
                                     <f:validateLength minimum="1" maximum="64"/>
                                 </p:inputText>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="lastNameError" for="lastName"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="email" value="email"/>
+                                <h:outputLabel for="email" value="Email adres"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="email" required="true" value="#{voter.user.emailAddress}" validatorMessage="Not a valid email address">
+                                <p:inputText id="email" required="true" value="#{voter.user.emailAddress}" requiredMessage="Vul hier je email adres in" validatorMessage="Vul een geldig email adres in" label="Emailadres">
                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                                 </p:inputText>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="emailError" for="email"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="telephone" value="telephone"/>
+                                <h:outputLabel for="telephone" value="Telefoonnummer"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="telephone" required="true" value="#{voter.user.telephone}" validatorMessage="Telephone is a required field">
+                                <p:inputText id="telephone" required="true" value="#{voter.user.telephone}" requiredMessage="Vul hier je telefoonnummer in" validatorMessage="Vul hier een geldig telefoonnummer in" label="Telefoonnummer">
                                 </p:inputText>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="telephoneError" for="telephone"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="birthDate" value="Birth date"/>
+                                <h:outputLabel for="birthDate" value="Geboortedatum"/>
                             </p:column>
                             <p:column>
-                                <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" validatorMessage="Birth date is a required field">
+                                <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" requiredMessage="Selecteer hier je geboortedatum" label="Geboortedatum">
                                 </p:calendar>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="birthDateError" for="birthDate"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
-                                <h:outputLabel value="Wat is de grootte in kilobytes van alle tracks in de volledige liedjes lijst geconverteerd naar 245 kilobytes per seonde. (1 kilobyte = 1*2^10 bytes)"/>
+                                <h:outputLabel value="Wat is de grootte in kilobytes van alle tracks in de volledige liedjes lijst geconverteerd naar 245 kilobytes per seconde ? (1 kilobyte = 1*2^10 bytes)"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -94,15 +89,21 @@
                                 <h:outputLabel for="answer" value="Antwoord schiftingsvraag:"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="answer" value="#{voter.user.answer}" required="true">
+                                <p:inputText id="answer" value="#{voter.user.answer}" required="true" label="Antwoord schifingsvraag" requiredMessage="Je moet een antwoord geven op de schiftingsvraag" validatorMessage="Je antwoord moet een geheel getal zijn groter dan nul.">
                                     <f:validateLongRange minimum="1"/>
                                     <f:validateRequired/>
                                 </p:inputText>
+                                <h:message errorClass="error" showSummary="true" showDetail="false" id="answerError" for="answer"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <column></column>
+                            <column>
+                                <p:commandButton ajax="false" value="Stem nu" action="#{voter.vote}" rendered="#{trackList.selectionComplete}" />
+                                <p:commandLink action="tracks" value="Selecteer vijf liedjes alvorens te stemmen" ajax="false" immediate="true" rendered="#{!trackList.selectionComplete}" />
+                            </column>
+                        </p:row>
                     </h:panelGrid>
-                    <p:commandButton ajax="false" value="Vote" action="#{voter.vote}" rendered="#{trackList.selectionComplete}" />
-                    <p:commandLink action="tracks" value="Select more tracks before voting" ajax="false" immediate="true" rendered="#{!trackList.selectionComplete}" />
                 </p:fieldset>
             </h:form>
         </section>

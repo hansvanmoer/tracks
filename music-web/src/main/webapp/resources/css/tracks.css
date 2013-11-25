@@ -97,3 +97,33 @@
     float: right;
     height: 40px;
 }
+
+.ui-draggable{
+    cursor: pointer;
+}
+
+.voterForm{
+    margin-top: 30px;
+    display: inline-block;
+    vertical-align: top;
+    width: 70%;
+}
+
+.voterForm label{
+    min-width: 200px;
+    display: inline-block;
+}
+
+.votePage .selectedTrackPanel{
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+}
+
+.tracksPage .sortLabel{
+    display: block;
+}
+
+.error{
+    color: #cd0a0a;
+}

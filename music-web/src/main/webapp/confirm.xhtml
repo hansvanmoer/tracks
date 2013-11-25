@@ -11,9 +11,9 @@
         </f:facet>
         <ui:include src="resources/html/header.xhtml"/>
         <section class="content">
-            <h3>Thank you for voting</h3>
+            <h3>Uw top 5 is geregistreerd</h3>
             <h:form>
-                <p:commandLink rendered="#{voter.hasVoted()}" action="#{voter.logout}" value="I have not yet voted" ajax="false"/>
+                <p:commandLink rendered="#{voter.hasVoted()}" action="#{voter.logout}" value="Ik heb nog niet gestemd" ajax="false"/>
             </h:form>
         </section>
         <ui:include src="resources/html/footer.xhtml"/>
