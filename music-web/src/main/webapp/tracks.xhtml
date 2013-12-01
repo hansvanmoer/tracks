@@ -14,10 +14,11 @@
             <h:outputStylesheet library="css" name="tracks.css"/>
         </f:facet>
         <ui:include src="resources/html/header.xhtml"/>
+        <h3>STEM HIER OP DE XL LIJST TOP 100 EN WIN EEN LEUKE PRIJS!</h3>
         <section class="content">
             <h:form>
                 <p:fieldset id="selectableTracks" legend="Songs" styleClass="tracks selectableTracks">  
-                    <p:outputLabel value="Filter:"/>
+                    <p:outputLabel value="Zoeken:" styleClass="searchLabel"/>
                     <p:inputText value="${trackList.searchQuery}">
                         <p:ajax event="keyup" listener="#{trackList.queryChanged}" update="trackTable"/>
                     </p:inputText>

@@ -12,8 +12,8 @@
         <section class="content">
             <h:form>
                 <p:outputPanel rendered="#{!settings.displayResults}">
-                    <h3>De poll is afgelopen.</h3>
-                    <p>De resultaten zullen op deze pagina worden weergegeven</p>
+                    <p>Je kan helaas niet meer stemme.</p>
+                    <p>De XL Lijst Top 100 kan je op donderdag 19 december beluisteren via www.xlair.be. We starten om 10u!</p>
                 </p:outputPanel>
                 <p:fieldset rendered="#{settings.displayResults}" >
                     <h3>De XL Air top 2013</h3>
@@ -29,19 +29,6 @@
                         <p:column headerText="Artiest">  
                             <h:outputText value="#{track.artist.name}" />  
                         </p:column>  
-                    </p:dataTable>
-                    <p:dataTable var="user" value="#{results.users}" paginator="true" rows="10"  
-                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
-                                 rowsPerPageTemplate="5,10,15" selectionMode="single" lazy="true" sortBy="#{user.score}" sortOrder="ascending">
-                        <p:column headerText="First name">
-                            <h:outputText value="#{user.firstName}" />  
-                        </p:column>  
-                        <p:column headerText="Last name">  
-                            <h:outputText value="#{user.lastName}" />  
-                        </p:column>  
-                        <p:column headerText="Answer">  
-                            <h:outputText value="#{user.answer}" />
-                        </p:column> 
                     </p:dataTable>
                 </p:fieldset>
             </h:form>

@@ -70,18 +70,8 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column>
-                                <h:outputLabel for="birthDate" value="Geboortedatum"/>
-                            </p:column>
-                            <p:column>
-                                <p:calendar value="#{voter.user.birthDate}" required="true" id="birthDate" requiredMessage="Selecteer hier je geboortedatum" label="Geboortedatum">
-                                </p:calendar>
-                                <h:message errorClass="error" showSummary="true" showDetail="false" id="birthDateError" for="birthDate"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
                             <p:column colspan="2">
-                                <h:outputLabel value="Wat is de grootte in kilobytes van alle tracks in de volledige liedjes lijst geconverteerd naar 245 kilobytes per seconde ? (1 kilobyte = 1*2^10 bytes)"/>
+                                <h:outputLabel value="Alle honderd platen van de XL Lijst Top 100 slaan we op als mp3 op een USB-stick. Elk mp3-bestand heeft een kwaliteit van 320kbps. Hoeveel kilobyte neemt de volledige lijst in op de USB-stick? (1 kilobyte = 1*2^10 bytes) ? Voer een geheel getal groter dan nul in."/>
                             </p:column>
                         </p:row>
                         <p:row>

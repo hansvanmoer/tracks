@@ -12,8 +12,11 @@
         <ui:include src="resources/html/header.xhtml"/>
         <section class="content">
             <h3>Uw top 5 is geregistreerd</h3>
+            <p>
+                Bedankt voor je stem! Luister zeker op donderdag 19 december vanaf 10u naar de XL Lijst Top 100 en wie weet win jij een van de vele leuke prijzen!
+            </p>
             <h:form>
-                <p:commandLink rendered="#{voter.hasVoted()}" action="#{voter.logout}" value="Ik heb nog niet gestemd" ajax="false"/>
+                <p:commandLink rendered="#{voter.hasVoted()}" action="#{voter.logout}" value="Ik heb nog niet gestemd" ajax="false" styleClass="link"/>
             </h:form>
         </section>
         <ui:include src="resources/html/footer.xhtml"/>

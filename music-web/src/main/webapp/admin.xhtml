@@ -13,6 +13,7 @@
             <h3>Administrator module</h3>
             <h:form>
                 <p:tabView id="tabs">
+                    <p:outputLabel value="Score is the total amount of votes a track has been given (5 points for 1st place, 4 for second, etc.). Each user can only vote on five tracks. Rank is calculated when voting has ended, with rank 1 the first (most popular) track, rank 2 the second, etc. A zero rank means voting is still ongoing and no rank can be calculated."/>
                     <p:tab id="trackTab" title="Tracks">
                         <p:dataTable var="track" value="#{administrator.tracks}" paginator="true" rows="10"  
                                      currentPageReportTemplate="Showing {startRecord}-{endRecord} out of {totalRecords}"

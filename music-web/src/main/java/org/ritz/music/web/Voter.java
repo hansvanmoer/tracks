@@ -63,6 +63,7 @@ public class Voter implements Serializable {
                 for (int i = 0; i < ApplicationConstants.SELECTED_TRACKS_COUNT; i++) {
                     votes.add(new Vote(user.getUserId(), trackList.getSelectedTracks().get(i).getTrackId(), ApplicationConstants.SELECTED_TRACKS_SCORES[i]));
                 }
+                user.setBirthDate(new Date()); //birth date is not used, but no time to remove it from model.
                 userService.addUser(user, votes);
                 return "confirm";
             } catch (MusicServiceException e) {

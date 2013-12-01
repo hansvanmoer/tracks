@@ -6,6 +6,14 @@
     Common rules
 */
 
+h1,h2,h3,h4,h5,h6{
+    color: #4F4F4F;
+}
+
+.searchLabel{
+    margin-right: 10px;
+}
+
 .selectedTracks{
     min-width: 500px;
 }
@@ -37,12 +45,24 @@
 
 .links a{
     text-decoration: none;
+    color: #ffffff;
+    display: block;
 }
 
 .links a:visited{
     color: #ffffff;
 }
 
+.link{
+    color: #4F4F4F;
+    margin-top: 2px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.link:visited{
+    color: #4F4F4F;
+}
 
 .footer{
     height: 50px;
@@ -122,6 +142,7 @@
 
 .tracksPage .sortLabel{
     display: block;
+    margin-bottom: 4px;
 }
 
 .error{
