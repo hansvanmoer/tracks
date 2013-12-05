@@ -104,7 +104,7 @@ public class HibernateTrackService extends HibernateService<Track, Long> impleme
     private static String createUpdateRanksQuery(int maxScorePerVote){
         StringBuilder query = new StringBuilder("select track_id, title, artist, keywords, score, rank");
         StringBuilder order = new StringBuilder("score desc");
-        for(int i = 1;i<=maxScorePerVote;i++){
+        for(int i = maxScorePerVote;i > 0;i--){
             query.append(String.format(", (select count(*) from vote v where v.track_id = t.track_id and v.score = %1$d ) as votes_%1$d", i));
             order.append(String.format(", votes_%1$d desc", i));
         }

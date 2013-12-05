@@ -22,8 +22,6 @@
     <listener>
         <listener-class>org.ritz.music.web.config.DataSourceConfigurator</listener-class>
     </listener>
-    
-    <display-name>tracks</display-name>
 
     <welcome-file-list>
         <welcome-file>tracks.xhtml</welcome-file>
@@ -46,17 +44,7 @@
     </login-config>
 
     <error-page>
-        <error-code>403</error-code>
-        <location>/error.xhtml</location>
-    </error-page>
-
-    <error-page>
         <error-code>500</error-code>
-        <location>/error.xhtml</location>
-    </error-page>
-    
-    <error-page>
-        <error-code>404</error-code>
         <location>/error.xhtml</location>
     </error-page>
        
